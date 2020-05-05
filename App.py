@@ -155,7 +155,8 @@ class TestApp(TestWrapper, TestClient):
     @iswrapper
     # ! [connectack]
     def connectAck(self):
-        if self.async:
+        #if self.async:
+        if True:
             self.startApi()
 
     # ! [connectack]
@@ -679,11 +680,11 @@ class TestApp(TestWrapper, TestClient):
         # ! [cancelmktdepth]
 
     # @printWhenExecuting
-    # def realTimeBars_req(self):
+    def realTimeBars_req(self):
         # Requesting real time bars
         # ! [reqrealtimebars]
-        # self.reqRealTimeBars(3101, ContractSamples.USStockAtSmart(), 5, "MIDPOINT", True, [])
-        # self.reqRealTimeBars(3001, ContractSamples.EurGbpFx(), 5, "MIDPOINT", True, [])
+        self.reqRealTimeBars(3101, ContractSamples.USStockAtSmart(), 5, "MIDPOINT", True, [])
+        self.reqRealTimeBars(3001, ContractSamples.EurGbpFx(), 5, "MIDPOINT", True, [])
         # ! [reqrealtimebars]
 
     @iswrapper
@@ -991,7 +992,7 @@ class TestApp(TestWrapper, TestClient):
         super().mktDepthExchanges(depthMktDataDescriptions)
         print("mktDepthExchanges:")
         for desc in depthMktDataDescriptions:
-            printinstance(desc)
+            print(desc)
     # ! [mktDepthExchanges]
 
     # @printWhenExecuting

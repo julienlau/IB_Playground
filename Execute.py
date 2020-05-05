@@ -11,6 +11,7 @@ def execute():
 def testBollingerAnalysis():
     from StrategyTest import testBollinger, sp500symbols
     testBollinger(sp500symbols(), 'SPY', dt.datetime(2017, 1, 1), dt.datetime(2017, 6, 1), 50000, 2, 20)
+    # testBollinger(sp500symbols(), 'LYS', dt.datetime(2017, 1, 1), dt.datetime(2017, 6, 1), 50000, 2, 20)
     # testBollinger(['MSFT', 'AMZN', 'GOOG', 'AAPL'], 'SPY', dt.datetime(2017, 1, 1), dt.datetime(2017, 6, 1), 10000, 1, 20)
 
 def testSampleStrategy():
@@ -27,6 +28,6 @@ def analyzePortfolio():
 
 def loadContracts():
     import SymbolsToContracts
-    SymbolsToContracts.load('symbols/snp500.csv')
+    SymbolsToContracts.load('symbols/jlu.csv')
 
 

@@ -13,7 +13,7 @@ logger.setLevel(logging.DEBUG)
 
 class BollingerBandAnalysis:
 
-    def __init__(self, df_price: pd.DataFrame, s_bollinger_index_out_file: str, s_plot_out_file_prefix: str, s_orders_out_file: str, s_values_out_file: str, f_commission = 1.0):
+    def __init__(self, df_price: pd.DataFrame, s_bollinger_index_out_file: str, s_plot_out_file_prefix: str, s_orders_out_file: str, s_values_out_file: str, f_commission = 2.5):
         self.df_price = df_price
         self.s_bollinger_index_out_file = s_bollinger_index_out_file
         self.s_plot_out_file_prefix = s_plot_out_file_prefix
@@ -26,12 +26,16 @@ class BollingerBandAnalysis:
         f_cash = f_initial_cash
 
         logger.debug('Calculating bollinger index')
+        logger.debug('what is my data for price' + str(self.df_price.tail(5)))
+        # NB : the first n_days_to_look_back values are NaN
         df_rolling = self.df_price.rolling(n_days_to_look_back)
         df_std = df_rolling.std()
         df_mean = df_rolling.mean()
         df_upper = df_mean + df_std * n_band_width
         df_lower = df_mean - df_std * n_band_width
         df_bollinger = (self.df_price - df_mean) / (df_std * n_band_width)
+        #logger.debug('what is my data bol calc %f %f %f %f ' % (df_rolling.first(),df_std.first(),df_mean.first(),df_upper.first(),df_lower.first()))
+        logger.debug('what is my data for bollinger' + str(df_bollinger.tail(5)))
 
         df_bollinger.to_csv(self.s_bollinger_index_out_file)
 

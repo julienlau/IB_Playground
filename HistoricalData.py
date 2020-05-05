@@ -76,8 +76,10 @@ def request(symbol: str, startDate: dt.datetime=None, endDate: dt.datetime=None,
 
     foundInCache = False
     try:
-        df = pd.read_csv(csvFileName, index_col=0, parse_dates=[0])
-        foundInCache = True
+        num_lines = sum(1 for line in open(csvFileName,'r'))
+        if num_lines > 1:
+            df = pd.read_csv(csvFileName, index_col=0, parse_dates=[0])
+            foundInCache = True
     except:
         pass
 
@@ -128,7 +130,9 @@ def request(symbol: str, startDate: dt.datetime=None, endDate: dt.datetime=None,
                     df[column] = df[column].fillna(method="ffill")
                     df[column] = df[column].fillna(method="bfill")
                     df[column] = df[column].fillna(1.0)
-                df.to_csv(csvFileName)
+                total_rows=len(df.axes[0])
+                if total_rows > 1:
+                    df.to_csv(csvFileName)
                 callback(symbol, df)
 
             req = Request(contract, dataType, dataCallback, endCallback)

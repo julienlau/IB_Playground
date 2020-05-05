@@ -1,3 +1,4 @@
+import os
 import csv
 import datetime as dt
 import pdb
@@ -7,7 +8,7 @@ import HistoricalData
 
 def sp500symbols():
     out = []
-    with open('symbols/snp500.csv', 'r') as fin:
+    with open('symbols/jlu.csv', 'r') as fin:
         reader = csv.reader(fin)
         for row in reader:
             out.append(row[0])
@@ -15,6 +16,8 @@ def sp500symbols():
 
 def test(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash):
 
+    if not os.path.isdir('strategyTest'):
+        os.mkdir('strategyTest')
     id = dt.datetime.now().strftime('%Y%m%d%H%M%S')
     profilerFile = 'strategyTest/EventStudy_' + id + '.pdf'
     ordersFile = 'strategyTest/orders_' + id + '.csv'
@@ -33,6 +36,8 @@ def test(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash):
 
 def testBollinger(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash, n_band_width, n_days_to_look_back):
 
+    if not os.path.isdir('strategyTest'):
+        os.mkdir('strategyTest')
     id = dt.datetime.now().strftime('%Y%m%d%H%M%S')
     s_bollinger_index_out_file = 'strategyTest/bollinger-index-' + id + '.csv'
     s_plot_out_file_prefix = 'strategyTest/bollinger-' + id;

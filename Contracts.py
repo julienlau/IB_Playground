@@ -96,7 +96,18 @@ def resolve(reqId, contractDescriptions: ListOfContractDescription):
             logger.debug("%d contracts found for %s", count, req.symbol)
             for cd in contractDescriptions:
                 contract = cd.contract
-                if contract.currency == 'USD':
+                if contract.currency == 'EUR':
+                    logger.debug("Using first EUR contract")
+                    logger.debug("Contract: conId:%s, symbol:%s, secType:%s, currency:%s, primaryExchange:%s",
+                        contract.conId,
+                        contract.symbol,
+                        contract.secType,
+                        contract.currency,
+                        contract.primaryExchange
+                    )
+                    requestDetail(reqId, contract)
+                    break
+                elif contract.currency == 'USD':
                     logger.debug("Using first USD contract")
                     logger.debug("Contract: conId:%s, symbol:%s, secType:%s, currency:%s, primaryExchange:%s",
                         contract.conId,
