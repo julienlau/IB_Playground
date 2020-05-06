@@ -6,9 +6,9 @@ from MarketSimulator import MarketSimulator
 from Analyze import PortfolioAnalyzer
 import HistoricalData
 
-def sp500symbols():
+def sp500symbols(symbol_file):
     out = []
-    with open('symbols/jlu.csv', 'r') as fin:
+    with open(symbol_file, 'r') as fin:
         reader = csv.reader(fin)
         for row in reader:
             out.append(row[0])
@@ -18,7 +18,7 @@ def test(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash):
 
     if not os.path.isdir('strategyTest'):
         os.mkdir('strategyTest')
-    id = dt.datetime.now().strftime('%Y%m%d%H%M%S')
+    id = dt.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
     profilerFile = 'strategyTest/EventStudy_' + id + '.pdf'
     ordersFile = 'strategyTest/orders_' + id + '.csv'
     valuesFile = 'strategyTest/values_' + id + '.csv'
@@ -34,11 +34,11 @@ def test(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash):
     ls_symbols.append(s_market_sym)
     HistoricalData.requestMultiple(ls_symbols, dt_start, dt_end, 'ADJUSTED_LAST', '1 day', doTest)
 
-def testBollinger(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash, n_band_width, n_days_to_look_back):
+def testBollinger(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash, f_amount_per_trade, n_band_width, n_bar_to_look_back, bar_size):
 
     if not os.path.isdir('strategyTest'):
         os.mkdir('strategyTest')
-    id = dt.datetime.now().strftime('%Y%m%d%H%M%S')
+    id = dt.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
     s_bollinger_index_out_file = 'strategyTest/bollinger-index-' + id + '.csv'
     s_plot_out_file_prefix = 'strategyTest/bollinger-' + id;
     s_orders_out_file = 'strategyTest/bollinger-orders-' + id + '.csv'
@@ -46,7 +46,8 @@ def testBollinger(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash, n
 
     def doTest(df_price):
         from BollingerBandAnalysis import BollingerBandAnalysis
-        BollingerBandAnalysis(df_price, s_bollinger_index_out_file, s_plot_out_file_prefix, s_orders_out_file, s_values_out_file).run(n_band_width, n_days_to_look_back, f_starting_cash)
+        BollingerBandAnalysis(df_price, s_bollinger_index_out_file, s_plot_out_file_prefix, s_orders_out_file, s_values_out_file)\
+            .run(n_band_width, n_bar_to_look_back, f_starting_cash, f_amount_per_trade)
         PortfolioAnalyzer(s_values_out_file, s_market_sym).run()
 
-    HistoricalData.requestMultiple(ls_symbols, dt_start, dt_end, 'ADJUSTED_LAST', '1 day', doTest)
+    HistoricalData.requestMultiple(ls_symbols, dt_start, dt_end, 'ADJUSTED_LAST', bar_size, doTest)

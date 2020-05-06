@@ -56,10 +56,9 @@ def SetupLogger():
         os.makedirs("log")
 
     time.strftime("pyibapi.%Y%m%d_%H%M%S.log")
+    recfmt = '%(asctime)s.%(msecs)03d %(levelname)s (%(threadName)s) %(filename)s:%(lineno)d %(message)s'
 
-    recfmt = '(%(threadName)s) %(asctime)s.%(msecs)03d %(levelname)s %(filename)s:%(lineno)d %(message)s'
-
-    timefmt = '%y%m%d_%H:%M:%S'
+    timefmt = '%Y-%m-%dT%H:%M:%S'
 
     # logging.basicConfig( level=logging.DEBUG,
                        # format=recfmt, datefmt=timefmt)

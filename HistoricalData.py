@@ -55,7 +55,10 @@ def requestMultiple(symbols: list, startDate: dt.datetime, endDate: dt.datetime,
     data = []
     symbols_in_order = []
     def receive(symbol, df):
-        logger.debug("Got data for %s", symbol)
+        if df.empty:
+            logger.warning("Got data for %s but is is EMPTY", symbol)
+        else:
+            logger.debug("Got data for %s", symbol)
         data.append(df)
         symbols_in_order.append(symbol)
         logger.debug('Got data for %d symbols', len(data))
@@ -69,7 +72,7 @@ def requestMultiple(symbols: list, startDate: dt.datetime, endDate: dt.datetime,
                 df_data[column] = df_data[column].fillna(1.0)
             callback(df_data)
     for symbol in symbols:
-        request(symbol, startDate, endDate, "ADJUSTED_LAST", "1 day", receive)
+        request(symbol, startDate, endDate, dataType, barSizeStr, receive)
 
 def request(symbol: str, startDate: dt.datetime=None, endDate: dt.datetime=None, dataType="ADJUSTED_LAST", barSizeStr="1 day", callback=None):
     csvFileName = csvFileNameForRequest(symbol, startDate, endDate, dataType, barSizeStr)
@@ -101,6 +104,7 @@ def request(symbol: str, startDate: dt.datetime=None, endDate: dt.datetime=None,
 
             start = startDate
             end = endDate
+            # retrieve the data with one request per day ?
             duration = dt.timedelta(days=1)
             if dataType == "ADJUSTED_LAST":
                 duration += dt.datetime.now() - start
@@ -113,7 +117,7 @@ def request(symbol: str, startDate: dt.datetime=None, endDate: dt.datetime=None,
 
             if barSizeStr == "1 day":
                 start = start.replace(hour=0)
-                end = end.replace(hour=16)
+                end = end.replace(hour=18)
 
             def dataCallback(bar: BarData):
                 try:
@@ -148,12 +152,12 @@ def csvFileNameForRequest(symbol: str, startDate: dt.datetime, endDate: dt.datet
         endDate = dt.datetime.now()
     if startDate == None:
         startDate = dt.datetime.now()
-    if barSizeStr.endswith("day"):
-        startDateStr = startDate.strftime("%Y%m%d")
-        endDateStr = endDate.strftime("%Y%m%d")
+    if barSizeStr.endswith("day") or barSizeStr.endswith("week") or barSizeStr.endswith("month") or barSizeStr.endswith("year"):
+        startDateStr = startDate.strftime("%Y-%m-%dT%H:%M:%S")
+        endDateStr = endDate.strftime("%Y-%m-%dT%H:%M:%S")
     else:
-        startDateStr = startDate.strftime("%Y%m%d%H%M%S")
-        endDateStr = endDate.strftime("%Y%m%d%H%M%S")
+        startDateStr = startDate.strftime("%Y-%m-%dT%H:%M:%S")
+        endDateStr = endDate.strftime("%Y-%m-%dT%H:%M:%S")
 
     filename = "hist/" + symbol + "_" + startDateStr + "_" + endDateStr + "_" + dataType + "_" + barSizeStr.replace(" ", "") + ".csv"
     return filename
