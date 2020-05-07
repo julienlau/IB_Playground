@@ -17,21 +17,22 @@ def execute():
     f_amount_per_trade = int(mycfg["f_amount_per_trade"])
     n_band_width = float(mycfg["n_band_width"])
     n_bar_to_look_back = int(mycfg["n_bar_to_look_back"])
+    bs_strategy = mycfg["bs_strategy"]
 
     # simulateMarket()
     loadContracts(symbol_file)
     # testSampleStrategy()
 
     testBollingerAnalysis(symbol_file, reference_ind, date_analysis_start, date_analysis_end,
-                          starting_cash, f_amount_per_trade, n_band_width, n_bar_to_look_back, bar_size)
+                          starting_cash, f_amount_per_trade, n_band_width, n_bar_to_look_back, bar_size, bs_strategy)
 
 
 def testBollingerAnalysis(symbol_file, reference_ind, date_analysis_start, date_analysis_end,
-                          starting_cash, f_amount_per_trade, n_band_width, n_bar_to_look_back, bar_size):
+                          starting_cash, f_amount_per_trade, n_band_width, n_bar_to_look_back, bar_size, bs_strategy):
     from StrategyTest import testBollinger, sp500symbols
     #testBollinger(sp500symbols(symbol_file), 'SPY', dt.datetime(2017, 1, 1), dt.datetime(2017, 6, 1), 50000, 2, 20)
     testBollinger(sp500symbols(symbol_file), reference_ind, date_analysis_start, date_analysis_end,
-                  starting_cash, f_amount_per_trade, n_band_width, n_bar_to_look_back, bar_size)
+                  starting_cash, f_amount_per_trade, n_band_width, n_bar_to_look_back, bar_size, bs_strategy)
     # testBollinger(['MSFT', 'AMZN', 'GOOG', 'AAPL'], 'SPY', dt.datetime(2017, 1, 1), dt.datetime(2017, 6, 1), 10000, 1, 20)
 
 

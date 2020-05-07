@@ -1,12 +1,14 @@
 bar_size: "1 day"
 data_type: "ADJUSTED_LAST"
+#data_type: "MIDPOINT"
 date_analysis_start: "2019-07-02T00:00:00"
 date_analysis_end: "2020-02-05T00:00:00"
 n_bar_total_max: 1000
 symbol_file: "symbols/jlu.csv"
-reference_ind: "LYS"
+reference_ind: "CAC40"
 #reference_ind: "SPY"
 starting_cash: 100000
 f_amount_per_trade: 10000
-n_band_width: 2.0
+n_band_width: 1.9
 n_bar_to_look_back: 20
+bs_strategy: jlu4

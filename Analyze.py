@@ -31,6 +31,7 @@ class PortfolioAnalyzer:
         self.starting_cash = int(mycfg["starting_cash"])
         self.n_band_width = float(mycfg["n_band_width"])
         self.n_bar_to_look_back = int(mycfg["n_bar_to_look_back"])
+        self.bs_strategy = mycfg["bs_strategy"]
 
     def run(self):
         logger.debug("Start analyizing %s ..." % self.valuesFile)

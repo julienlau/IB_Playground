@@ -34,7 +34,7 @@ def test(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash):
     ls_symbols.append(s_market_sym)
     HistoricalData.requestMultiple(ls_symbols, dt_start, dt_end, 'ADJUSTED_LAST', '1 day', doTest)
 
-def testBollinger(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash, f_amount_per_trade, n_band_width, n_bar_to_look_back, bar_size):
+def testBollinger(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash, f_amount_per_trade, n_band_width, n_bar_to_look_back, bar_size, bs_strategy):
 
     if not os.path.isdir('strategyTest'):
         os.mkdir('strategyTest')
@@ -47,7 +47,7 @@ def testBollinger(ls_symbols, s_market_sym, dt_start, dt_end, f_starting_cash, f
     def doTest(df_price):
         from BollingerBandAnalysis import BollingerBandAnalysis
         BollingerBandAnalysis(df_price, s_bollinger_index_out_file, s_plot_out_file_prefix, s_orders_out_file, s_values_out_file)\
-            .run(n_band_width, n_bar_to_look_back, f_starting_cash, f_amount_per_trade)
+            .run(n_band_width, n_bar_to_look_back, f_starting_cash, f_amount_per_trade, bs_strategy)
         PortfolioAnalyzer(s_values_out_file, s_market_sym).run()
 
     HistoricalData.requestMultiple(ls_symbols, dt_start, dt_end, 'ADJUSTED_LAST', bar_size, doTest)
